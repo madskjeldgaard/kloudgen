@@ -1,9 +1,12 @@
 // Stereo output
 KloudGen2 {
-	classvar numGrains=4;
+	*numGrainstreams{
+		^4
+	}
 
 	*ar{|gdur=0.1, buffer, buffernumchans=2, diffuse=0.5, density=1.0, rate=0.95, shape=0.5, ratespread=0.0, pos=0.25, posspread=0.0, rand=1.0, overlap=0.0, amp=0.5|
 		var cloud;
+		var numGrains = this.numGrainstreams;
 
 		// Normalize params
 		density = density.linexp(0.0,1.0,0.0001,100.0);
@@ -48,7 +51,7 @@ KloudGen2 {
 			var position = (weight * pos + (posspread * coef)).wrap(0.0,1.0) * BufFrames.ir(buffer);
 
 			// Calculate playback rate
-			// var randrate = rate * LFNoise1.ar(density*rate).linlin(-1.0,1.0,(1.0-diffuse).poll,1.0+diffuse);
+			// var randrate = rate * LFNoise1.ar(density*rate).linlin(-1.0,1.0,(1.0-diffuse),1.0+diffuse);
 			var randrate = rate * TRand.ar(lo: 1.0 - diffuse, hi: 1.0+diffuse, trig: trig);
 			// var randrate = rate * TRand.kr(
 			// 	lo: 1.0, 
@@ -76,7 +79,7 @@ KloudGen2 {
 		// Pass cloud into panning function
 		cloud = SynthDef.wrap(this.panFunction, prependArgs: [cloud]);
 
-		^LeakDC.ar(cloud).poll
+		^LeakDC.ar(cloud)
 	}
 
 	*panFunction{
@@ -97,21 +100,108 @@ KloudGen1 : KloudGen2{
 }
 
 // Multichannel Azimuth
-KloudGenAz : KloudGen2{
-	classvar numGrains = 8; // Increase number of grains, just in case
+KloudGen4 : KloudGen2{
+
+	*numChans{
+		^4
+	}
+
+	*numGrainstreams{
+		^4
+	}
 
 	*panFunction{
-		^{|in, numchans=4, center=0, width=1.5, orientation=0.5, spatialspread=1|
+		^{|in, center=0, width=1.5, orientation=0.5, spatialspread=1|
 			SplayAz.ar(
-				numChans: 4, // TODO: This only works if set manually. If the numchans argument is passed in here, I get an indexing error. Why
-				inArray: in, 
-				// spread: spatialspread, 
-				// width: width, 
-				// center: center, 
-				// orientation: orientation,  
-				// levelComp: true
+				numChans: this.numChans, 
+				inArray: in.flatten, 
+				spread: spatialspread, 
+				width: width, 
+				center: center, 
+				orientation: orientation,  
+				levelComp: true
 			);
 		}
 
+	}
+}
+
+// Everything above 4 channels has as many grain streams as channels.
+// TODO: Too many perhaps?
+KloudGen5 : KloudGen4{
+	*numChans{
+		^5
+	}
+
+	*numGrainstreams{
+		^this.numChans
+	}
+
+}
+
+KloudGen6 : KloudGen5{
+	*numChans{
+		^6
+	}
+}
+
+KloudGen7 : KloudGen5{
+	*numChans{
+		^7
+	}
+}
+
+KloudGen8 : KloudGen5{
+	*numChans{
+		^8
+	}
+
+}
+
+KloudGen9 : KloudGen5{
+	*numChans{
+		^9
+	}
+}
+
+KloudGen10 : KloudGen5{
+	*numChans{
+		^10
+	}
+}
+
+KloudGen11 : KloudGen5{
+	*numChans{
+		^11
+	}
+}
+
+KloudGen12 : KloudGen5{
+	*numChans{
+		^12
+	}
+}
+
+KloudGen13 : KloudGen5{
+	*numChans{
+		^13
+	}
+}
+
+KloudGen14 : KloudGen5{
+	*numChans{
+		^14
+	}
+}
+
+KloudGen15 : KloudGen5{
+	*numChans{
+		^15
+	}
+}
+
+KloudGen16 : KloudGen5{
+	*numChans{
+		^16
 	}
 }
