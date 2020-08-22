@@ -103,7 +103,7 @@ KloudGenAz : KloudGen2{
 	*panFunction{
 		^{|in, numchans=4, center=0, width=1.5, orientation=0.5, spatialspread=1|
 			SplayAz.ar(
-				numChans: 4, 
+				numChans: 4, // TODO: This only works if set manually. If the numchans argument is passed in here, I get an indexing error. Why
 				inArray: in, 
 				// spread: spatialspread, 
 				// width: width, 
