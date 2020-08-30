@@ -1,0 +1,13 @@
+TITLE:: KloudGen8
+summary:: A 8 channel granular cloud generator
+categories:: UGens>GranularSynthesis
+related:: Classes/KloudGen, Classes/PlayBuf
+
+A 8 output channel cloud synthesis UGEN. 
+
+See LINK::Guides/KloudGen:: for more information on how to use it + examples. 
+
+CLASSMETHODS::
+COPYMETHOD:: KloudGen1 *ar
+
+

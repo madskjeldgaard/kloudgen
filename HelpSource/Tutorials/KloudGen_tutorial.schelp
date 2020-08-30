@@ -1,0 +1,22 @@
+TITLE:: KloudGen_tutorial
+SUMMARY:: A tutorial
+CATEGORIES:: Tutorials, Server
+RELATED:: Tutorials/Server_Tutorial
+
+SECTION:: Introduction
+This is the introduction to the tutorial
+CODE::
+// An example:
+SinOsc.ar(441!2)
+::
+
+SECTION:: Going further
+
+This is another section.
+
+CODE::
+// An example:
+SinOsc.ar(441!2)
+::
+
+KEYWORD:: findMe,andMe

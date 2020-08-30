@@ -1,0 +1,161 @@
+TITLE:: KloudGen
+SUMMARY:: A granular cloud generator
+CATEGORIES:: UGens>GranularSynthesis
+RELATED:: Classes/PlayBuf
+
+DESCRIPTION:: KloudGen
+Cloud synthesis is a kind of granular synthesis that allows for many overlapping grains of sound.  
+
+This package is a collection of "pseudo UGENS" containing predefined SuperCollider patches for achieving cloud synthesis quite easily. 
+
+SUBSECTION:: Naming convention + Multichannel
+The KloudGen pseudo ugens all follow the same naming pattern consisting of the name followed by a number indicating the number of outputs. Eg CODE::KloudGen4.ar():: will output to 4 channels and CODE::KloudGen8.ar():: to 8 channels, etc.
+
+From 4 channels and above, the underlying algorithm used for panning is SplayAZ. 
+
+SUBSECTION:: Inspiration
+
+Further inspiration on microsound and granular synthesis may be found here:
+
+LIST::
+## Curtis Roads' "Microsound" book --> link::https://www.curtisroads.net/books::
+## "The SuperCollider Book", chapter 16 by Alberto de Campo
+## Mutable Instruments' revolutionary Clouds module --> link::https://mutable-instruments.net/modules/clouds/::
+::
+
+EXAMPLES::
+
+code::
+(
+s.waitForBoot{
+	~path = Main.packages.asDict.at('KloudGen') +/+ "examples/sound/harmshort.wav";
+	b = b ?? { Buffer.read(s, ~path.asAbsolutePath )};
+
+	// A very straight forward cloud synth
+	SynthDef(\cloud, { 
+		arg out=0, 
+		dur=1, 
+		attack=0.1,
+		release=0.9,
+		legato=0,
+		amp=0.75,
+		gdur=0.1, 
+		buffer, 
+		diffuse=0.1, 
+		density=0.75, 
+		rate=1.0, 
+		shape=0.0, 
+		ratespread=0, 
+		pos=0.5, 
+		posspread=0.1, 
+		rand=0.25, 
+		overlap=0;
+
+		var sig = KloudGen2.ar(
+			gdur, 
+			buffer, 
+			2, 
+			diffuse, 
+			density, 
+			rate, 
+			shape, 
+			ratespread, 
+			pos, 
+			posspread, 
+			rand, 
+			overlap, 
+			1.0
+		);
+
+		var env = EnvGen.kr(
+			Env.perc(attack, release),  
+			gate: 1.0,  
+			timeScale: dur * (legato+1),  
+			doneAction: 2
+		);
+
+		sig = sig * env;
+		sig = sig * amp;
+
+		Out.ar(out, sig)
+
+	}).add;
+
+	// Same as above but with envelope modulating some of the cloud parameters
+	SynthDef(\appearance, { 
+		arg out=0, 
+		dur=1, 
+		attack=0.1,
+		release=0.9,
+		legato=0,
+		amp=0.75,
+		gdur=0.1, 
+		buffer, 
+		diffuse=0.1, 
+		density=0.75, 
+		rate=1.0, 
+		shape=0.0, 
+		ratespread=0, 
+		pos=0.5, 
+		posspread=0.1, 
+		rand=0.25, 
+		overlap=0;
+
+		var env = EnvGen.kr(
+			Env.perc(attack, release),  
+			gate: 1.0,  
+			timeScale: dur * (legato+1),  
+			doneAction: 2
+		);
+
+		var sig = KloudGen2.ar(
+			env.linlin(0.0,1.0,gdur/2, gdur), 
+			buffer, 
+			2, 
+			env.lag2 * diffuse, 
+			env.lag3.linlin(0.0,1.0, density/2, density),
+			rate, 
+			shape, 
+			ratespread, 
+			pos, 
+			posspread, 
+			rand, 
+			overlap, 
+			1.0
+		);
+
+		sig = sig * env;
+		sig = sig * amp;
+
+		Out.ar(out, sig)
+
+	}).add;
+}
+)
+
+// Then test the SynthDefs in pattern jumping between the two instruments just defined
+(
+Pdef(\cloudpat1, 
+	Pbind(
+		\instrument, Pseq([\cloud,\appearance],inf), 
+		// \dur, Pseg([0.25,8.0], Pwhite(4,128), \exp, inf), 
+		\dur, Pwhite(0.1,0.25),
+		\legato, 0,
+		\attack, Pwhite(0.001,1.0), 
+		\release, 1 - Pkey(\attack), 
+		\gdur, Pseg(Pseq([0.25,0.01],inf), Pwhite(4,16), \exp, inf), 
+		\amp, 1, 
+		\density, 0.90, 
+		\diffuse,0.1,
+		\shape, 0,
+		\posspread, 0.5,
+		\pos, 0.35,
+		\rand, 0.9,
+		\rate, Pwhite(0.5,0.9)
+	)
+).play
+)
+::
+
+KEYWORD:: granular,grain,granularsynthesis
+

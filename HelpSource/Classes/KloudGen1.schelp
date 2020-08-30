@@ -1,0 +1,56 @@
+TITLE:: KloudGen1
+summary:: A 1 channel granular cloud generator
+categories:: UGens>GranularSynthesis
+related:: Classes/KloudGen, Classes/PlayBuf
+
+A 1 output channel cloud synthesis UGEN. 
+
+See LINK::Classes/KloudGen:: for more information on how to use it + examples. 
+
+CLASSMETHODS::
+
+METHOD:: ar
+
+Almost all parameters are normalized to 0.0 - 1.0 range.
+
+ARGUMENT::gdur
+The duration of each grain
+
+ARGUMENT::buffer
+
+ARGUMENT::buffernumchans
+Number of channels in the specified buffer
+
+ARGUMENT::diffuse
+Add randomness to to each grain (0.0 - 1.0)
+
+ARGUMENT::density
+Adjust the density of the cloud (0.0 - 1.0)
+
+ARGUMENT::rate
+Buffer playback rate of cloud (0.0 - 1.0)
+
+ARGUMENT::shape
+Grain shape, from soft, siney shape to harder clicky shape (0.0 - 1.0)
+
+ARGUMENT::ratespread
+Spread the rate parameters between all grain streams (like a chord) (0.0 - 1.0)
+
+ARGUMENT::pos
+Position in buffer (0.0 - 1.0)
+
+ARGUMENT::posspread
+Spread out the buffer position of each grain stream so they all start in different places (0.0 - 1.0)
+
+ARGUMENT::rand
+Add randomness to grain trigger, from deterministic to chaotic (0.0 - 1.0)
+
+ARGUMENT::overlap
+How much each grain stream's grains should overlap with anothers (0.0 - 1.0)
+
+ARGUMENT::amp
+amplitude
+
+PRIVATE::numGrainStreams
+
+PRIVATE::panFunction
