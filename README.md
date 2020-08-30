@@ -1,9 +1,10 @@
-# WORK IN PROGRESS!
 ## KloudGen
 
 ### A granular cloud generator
 
 A granular cloud generator
+
+See the `KloudGen` help file for more information.
 
 ### Installation
 
