@@ -3,7 +3,7 @@
   summary: "A granular cloud generator",
   version: "0.003",
   schelp: "KloudGen.schelp",
-  dependencies: ,
+  dependencies: "",
   license: "GNU GPL v3.0",
   copyright: "madskjeldgaard",
   ext_dependency: "",
